@@ -774,7 +774,10 @@ if ~sanityChecks
     if 1
         %graph.Edges cannot be directly edited in a graph object, so extract,
         %edit and regenerate the graph
-        Edges = removevars(MTG.Edges,{'Trans','TransIndex','TransInstIndex','OrigTransInstIndex','HeadAtomIndex','TailAtomIndex','HeadAtom','TailAtom','orientationATM2dATM','IsCanonical','Rxn'});
+        var2remove = {'Trans','TransIndex','TransInstIndex','OrigTransInstIndex','HeadAtomIndex','TailAtomIndex','HeadAtom','TailAtom','orientationATM2dATM','IsCanonical','Rxn'};
+        var2remove =  var2remove(ismember({'Trans','TransIndex','TransInstIndex','OrigTransInstIndex','HeadAtomIndex','TailAtomIndex','HeadAtom','TailAtom','orientationATM2dATM','IsCanonical','Rxn'},MTG.Edges.Properties.VariableNames));
+        Edges = removevars(MTG.Edges,var2remove);
+        %Edges = removevars(MTG.Edges,{'Trans','TransIndex','TransInstIndex','OrigTransInstIndex','HeadAtomIndex','TailAtomIndex','HeadAtom','TailAtom','orientationATM2dATM','IsCanonical','Rxn'});
         %add variables
         Edges = addvars(Edges,MTG.Nodes.Formula(Edges.EndNodes(:,1)),'NewVariableNames','Formula');
         %reorder the variables 
@@ -1138,8 +1141,10 @@ if ~sanityChecks
     % arm.ATG.Edges.TransInstIndex - a numeric id the directed atom transition instance from which this atom transition was derived
     % arm.ATG.Edges.orientationATM2dATM - orientation of edge with respect to the reaction from which this atom transition was derived
     % arm.ATG.Edges.Rxn - the reaction from which this atom transition was derived
-    
-    ATG = graph(removevars(ATG.Edges,{'OrigTransInstIndex','TransInstIndex','orientationATM2dATM','Rxn'}),ATG.Nodes);
+    var2remove = {'OrigTransInstIndex','TransInstIndex','orientationATM2dATM','Rxn'};
+    var2remove = var2remove(ismember(var2remove,ATG.Edges.Properties.VariableNames));   
+    ATG = graph(removevars(ATG.Edges,var2remove),ATG.Nodes);
+    %ATG = graph(removevars(ATG.Edges,{'OrigTransInstIndex','TransInstIndex','orientationATM2dATM','Rxn'}),ATG.Nodes);
 end
 
 %for i=1:6 Mk = diag(arm.I2M(i,:))*M; Nk = arm.M2M*Mk*arm.M2R;Nk2=diag(arm.L(i,:))*N; disp(norm(Nk-Nk2)); end
