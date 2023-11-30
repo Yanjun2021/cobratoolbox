@@ -1,6 +1,6 @@
 function printConstraints(model, minInf, maxInf, rxnSelection, modelAfter, printLevel)
-% Print all network constraints that are between `-Inf (minInf)` or `+Inf
-% (maxInf) inclusive` 
+% Print all network constraints that are between `-Inf (minInf)` and `+Inf
+% (maxInf) inclusive`
 %
 % USAGE:
 %
@@ -67,7 +67,7 @@ revRxnBool0b = model.lb >= minInf & model.ub <= maxInf & model.ub == 0 & ~revers
 
 
 if ~any(closedRxnBool | reversibleRxnBool | fwdRxnBool0b | revRxnBool0b | fwdRxnBoolNon0b | revRxnBoolNon0b)
-    boolRemainder = rxnSelection & ~(closedRxnBool | reversibleRxnBool | fwdRxnBool | revRxnBool);
+    boolRemainder = rxnSelection & ~(closedRxnBool | reversibleRxnBool | fwdRxnBool0b | revRxnBool0b | fwdRxnBoolNon0b | revRxnBoolNon0b);
     warning('no subset with bounds between [minInf maxInf]')
 else
     boolRemainder=0;
